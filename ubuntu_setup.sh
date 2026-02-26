@@ -105,6 +105,15 @@ if ! command -v dbeaver > /dev/null 2>&1; then
 fi
 
 
+echo "==> Installing Anaconda"
+if [ ! -d "$HOME/anaconda3" ]; then
+    ANACONDA_INSTALLER="/tmp/anaconda.sh"
+    curl -fsSL https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh -o "$ANACONDA_INSTALLER"
+    bash "$ANACONDA_INSTALLER" -b -p "$HOME/anaconda3"
+    rm -f "$ANACONDA_INSTALLER"
+    "$HOME/anaconda3/bin/conda" init bash
+fi
+
 echo "==> Installing PyCharm"
 if ! snap list pycharm-professional > /dev/null 2>&1; then
     sudo snap install pycharm-professional --classic
