@@ -156,14 +156,6 @@ if ! command -v docker > /dev/null 2>&1; then
     sudo usermod -aG docker "$USER"
 fi
 
-echo "==> Installing zsh & Oh My Zsh"
-if ! command -v zsh > /dev/null 2>&1; then
-    sudo apt-get install -y zsh
-fi
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-fi
-
 echo "==> Cleanup"
 sudo apt-get autoremove -y
 sudo apt-get clean
