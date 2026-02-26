@@ -101,12 +101,13 @@ fi
 
 echo "==> Installing DBeaver (database client)"
 if ! command -v dbeaver > /dev/null 2>&1; then
-    sudo snap install dbeaver-ce
+    sudo snap install dbeaver-ce --classic
 fi
 
-echo "==> Installing Slack"
-if ! snap list slack > /dev/null 2>&1; then
-    sudo snap install slack
+
+echo "==> Installing PyCharm"
+if ! snap list pycharm-professional > /dev/null 2>&1; then
+    sudo snap install pycharm-professional --classic
 fi
 
 echo "==> Installing development libraries"
