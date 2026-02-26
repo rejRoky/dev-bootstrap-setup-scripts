@@ -44,16 +44,70 @@ sudo apt-get install -y \
     gdebi \
     apt-utils \
     apt-transport-https \
-    software-properties-common
+    software-properties-common \
+    tmux \
+    fzf \
+    ripgrep \
+    bat \
+    fd-find \
+    xclip \
+    meld \
+    dnsutils \
+    lsof \
+    strace \
+    gdb \
+    valgrind \
+    neofetch
+
+echo "==> Installing GitHub CLI"
+if ! command -v gh > /dev/null 2>&1; then
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+    sudo apt-get update -y
+    sudo apt-get install -y gh
+fi
 
 echo "==> Installing desktop & media tools"
 sudo apt-get install -y \
     ubuntu-restricted-extras \
     vlc \
     gimp \
+    firefox \
+    libreoffice \
     gnome-tweaks \
     gnome-shell-extensions \
     dconf-editor
+
+echo "==> Installing Google Chrome"
+if ! command -v google-chrome > /dev/null 2>&1; then
+    wget -q -O /tmp/google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    sudo gdebi --non-interactive /tmp/google-chrome.deb
+    rm -f /tmp/google-chrome.deb
+fi
+
+echo "==> Installing Visual Studio Code"
+if ! command -v code > /dev/null 2>&1; then
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/vscode stable main" | sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+    sudo apt-get update -y
+    sudo apt-get install -y code
+fi
+
+echo "==> Installing Postman"
+if ! command -v postman > /dev/null 2>&1; then
+    sudo snap install postman
+fi
+
+echo "==> Installing DBeaver (database client)"
+if ! command -v dbeaver > /dev/null 2>&1; then
+    sudo snap install dbeaver-ce
+fi
+
+echo "==> Installing Slack"
+if ! snap list slack > /dev/null 2>&1; then
+    sudo snap install slack
+fi
 
 echo "==> Installing development libraries"
 sudo apt-get install -y \
@@ -66,6 +120,12 @@ sudo apt-get install -y \
     libbz2-dev \
     libreadline-dev \
     libsqlite3-dev
+
+echo "==> Installing database clients"
+sudo apt-get install -y \
+    postgresql-client \
+    redis-tools \
+    sqlite3
 
 echo "==> Installing Python"
 sudo apt-get install -y \
@@ -84,6 +144,14 @@ echo "==> Installing Docker"
 if ! command -v docker > /dev/null 2>&1; then
     curl -fsSL https://get.docker.com | sudo sh
     sudo usermod -aG docker "$USER"
+fi
+
+echo "==> Installing zsh & Oh My Zsh"
+if ! command -v zsh > /dev/null 2>&1; then
+    sudo apt-get install -y zsh
+fi
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
 echo "==> Cleanup"
